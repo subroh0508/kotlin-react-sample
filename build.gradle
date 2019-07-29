@@ -1,0 +1,53 @@
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfigWriter
+
+plugins {
+    id 'org.jetbrains.kotlin.js' version '1.3.41'
+}
+
+group 'subroh0508.net'
+version '1.0-SNAPSHOT'
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "http://dl.bintray.com/kotlin/kotlin-js-wrappers" }
+    maven { url 'https://plugins.gradle.org/m2/' }
+}
+
+kotlin {
+    target {
+        browser {
+            runTask {
+                devServer = new KotlinWebpackConfigWriter.DevServer(
+                        true, false, true, true, false,
+                        8080,
+                        null,
+                        ["$projectDir/src/main/resources".toString()]
+                )
+            }
+        }
+    }
+
+    sourceSets {
+        main {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
+                implementation "org.jetbrains.kotlinx:kotlinx-html-js:0.6.12"
+                implementation "org.jetbrains:kotlin-react:16.8.6-pre.80-kotlin-1.3.41"
+                implementation "org.jetbrains:kotlin-react-dom:16.8.6-pre.80-kotlin-1.3.41"
+                implementation "org.jetbrains:kotlin-styled:1.0.0-pre.80-kotlin-1.3.41"
+
+                implementation npm("core-js", "~3.1.4")
+                implementation npm("react", "16.8.6")
+                implementation npm("react-dom", "16.8.6")
+                implementation npm("styled-components", "3.4.10")
+                implementation npm("inline-style-prefixer", "5.0.4")
+            }
+        }
+        test {
+            dependencies {
+                implementation "org.jetbrains.kotlin:kotlin-test-js"
+            }
+        }
+    }
+}
